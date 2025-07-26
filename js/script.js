@@ -183,6 +183,7 @@ const quizData = [
   }
 ];
 
+
 // --- DOM 要素取得 ---
 const progressBar         = document.getElementById('progress-bar');
 const questionNumberEl    = document.getElementById('question-number');
@@ -216,8 +217,8 @@ function loadQuestion() {
   nextBtn.classList.add('hidden');
   optionsContainer.innerHTML = '';
 
-  // プログレスバー更新
-  const progress = (currentQuestionIndex / quizData.length) * 100;
+  // プログレスバー更新（任意で調整可）
+  const progress = ((currentQuestionIndex) / quizData.length) * 100;
   progressBar.style.width = `${progress}%`;
 
   const q = quizData[currentQuestionIndex];
@@ -242,8 +243,8 @@ function loadQuestion() {
 // --- 解答処理 ---
 function selectAnswer(e) {
   const selected = e.currentTarget;
-  const chosen = parseInt(selected.dataset.index, 10);
-  const correct = quizData[currentQuestionIndex].correctAnswer;
+  const chosen   = parseInt(selected.dataset.index, 10);
+  const correct  = quizData[currentQuestionIndex].correctAnswer;
 
   // 全ボタン無効化
   optionsContainer.querySelectorAll('button').forEach(b => {
@@ -269,9 +270,10 @@ function selectAnswer(e) {
 }
 
 // --- 次へ・結果表示 ---
+// 修正ポイント：インクリメント前に条件を判定し、最後の問題まで繰り返す
 function showNextQuestion() {
-  currentQuestionIndex++;
-  if (currentQuestionIndex < quizData.length) {
+  if (currentQuestionIndex < quizData.length - 1) {
+    currentQuestionIndex++;
     loadQuestion();
   } else {
     showResults();
